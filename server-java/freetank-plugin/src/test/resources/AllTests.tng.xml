@@ -3,7 +3,7 @@
 <suite name="AllTests">
 	<test name="All">
 		<packages>
-			<package name="org.youngmonkeys.breaking_game.plugin.test"></package>
+			<package name="org.youngmonkeys.freetank.plugin.test"></package>
 		</packages>
 	</test>
 </suite>

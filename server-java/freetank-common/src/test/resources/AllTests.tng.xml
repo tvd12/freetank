@@ -4,7 +4,7 @@
 
     <test name="All">
     	<packages>
-    		<package name="org.youngmonkeys.breaking_game.common.test"/>
+    		<package name="org.youngmonkeys.freetank.common.test"/>
     	</packages>
     </test>
 </suite>
