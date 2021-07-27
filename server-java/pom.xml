@@ -8,12 +8,12 @@
 		<version>1.0.0</version>
 	</parent>
 	
-	<groupId>org.youngmokeys</groupId>
-	<artifactId>breaking-game</artifactId>
+	<groupId>org.youngmonkeys</groupId>
+	<artifactId>freetank</artifactId>
 	<version>1.1.0</version>
 	<packaging>pom</packaging>
 	
-	<name>breaking-game</name>
+	<name>freetank</name>
 	<url>https://youngmonkeys.org/</url>
 
 	<properties>
@@ -57,10 +57,10 @@
 		</profile>
 	</profiles>
 	<modules>
-		<module>breaking-game-common</module>
-	 	<module>breaking-game-plugin</module>
-	 	<module>breaking-game-app-api</module>
-		<module>breaking-game-app-entry</module>
-    	<module>breaking-game-startup</module>
+		<module>freetank-common</module>
+	 	<module>freetank-plugin</module>
+	 	<module>freetank-app-api</module>
+		<module>freetank-app-entry</module>
+    	<module>freetank-startup</module>
     </modules>
 </project>

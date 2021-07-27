@@ -3,7 +3,7 @@ a socket game build on ezyfox-server and unity
 
 # Introduction 
 
-Space Shooter is a socket game. It uses #ezyfox-server and #MongoDB for server side, #Unity and #ezyfox-server-unity client sdk for client
+Freetank is a socket game. It uses #ezyfox-server and #MongoDB for server side, #Unity and #ezyfox-server-unity client sdk for client
 
 # It supports
 
