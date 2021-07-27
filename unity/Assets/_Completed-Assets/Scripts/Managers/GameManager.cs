@@ -29,6 +29,10 @@ namespace Complete
         private void Awake()
         {
             Instance = this;
+
+            com.tvd12.ezyfoxserver.client.logger.EzyLoggerFactory.setLoggerSupply(type => new UnityLogger(type));
+            var socketClientProxy = SocketClientProxy.getInstance();
+            socketClientProxy.connectToServer();
         }
 
         private void Start()
