@@ -14,7 +14,7 @@
 	<user-management>
 		<allow-guest-login>false</allow-guest-login>
 		<guest-name-prefix>Guest#</guest-name-prefix>
-		<user-max-idle-time>15</user-max-idle-time>
+		<user-max-idle-time>0</user-max-idle-time>
 		<max-session-per-user>1</max-session-per-user>
 		<allow-change-session>true</allow-change-session>
 		<user-name-pattern>^[a-zA-Z0-9_.#]{3,36}$</user-name-pattern>

@@ -58,7 +58,8 @@ public class GameService {
                     roomManager.removeRoom(room);
                 } else {
                     LocatedPlayer master = room.getPlayerManager().setNewMaster();
-                    master.setRole(PlayerRole.MASTER);
+                    if(master != null)
+                        master.setRole(PlayerRole.MASTER);
                 }
             }
         }

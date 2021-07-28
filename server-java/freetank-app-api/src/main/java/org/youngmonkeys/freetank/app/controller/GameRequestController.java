@@ -6,6 +6,7 @@ import com.tvd12.ezyfox.core.annotation.EzyRequestController;
 import com.tvd12.ezyfox.exception.BadRequestException;
 import com.tvd12.ezyfox.factory.EzyEntityFactory;
 import com.tvd12.ezyfox.io.EzyLists;
+import com.tvd12.ezyfox.util.EzyLoggable;
 import com.tvd12.ezyfoxserver.entity.EzyUser;
 import com.tvd12.ezyfoxserver.support.factory.EzyResponseFactory;
 import com.tvd12.gamebox.constant.PlayerRole;
@@ -21,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 @EzyRequestController
-public class GameRequestController {
+public class GameRequestController extends EzyLoggable {
 
 	@EzyAutoBind
 	private GameService gameService;
@@ -30,7 +31,7 @@ public class GameRequestController {
 	private EzyResponseFactory responseFactory;
 
 	@EzyDoHandle(Commands.ACCESS_GAME)
-	public void accessGame(EzyUser user) {
+	public void userAccessGame(EzyUser user) {
 		LocatedRoom room;
 		LocatedPlayer player;
 		synchronized (gameService) {
@@ -52,6 +53,28 @@ public class GameRequestController {
 			.command(Commands.PLAYER_ACCESS_GAME)
 			.param("playerName", user.getName())
 			.usernames(EzyLists.filter(playerNames, it -> !it.equals(user.getName())))
+			.execute();
+	}
+
+	@EzyDoHandle(Commands.PLAYER_EXIT_GAME)
+	public void userExitGame(EzyUser user) {
+		logger.info("freetank app: user {} removed", user);
+		LocatedRoom room;
+		List<String> playerNames;
+		String playerName = user.getName();
+		synchronized (gameService) {
+			room = gameService.removePlayer(playerName);
+		}
+		if(room == null) {
+			return;
+		}
+		synchronized (room) {
+			playerNames = room.getPlayerManager().getPlayerNames();
+		}
+		responseFactory.newObjectResponse()
+			.command(Commands.PLAYER_EXIT_GAME)
+			.param("playerName", playerName)
+			.usernames(playerNames)
 			.execute();
 	}
 

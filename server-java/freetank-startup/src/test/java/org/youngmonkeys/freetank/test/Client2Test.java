@@ -109,5 +109,9 @@ public class Client2Test {
 		appSetup.addDataHandler(Commands.SYNC_DATA, (app, data) -> {
 			System.out.println("position: " + data);
 		});
+		appSetup.addDataHandler(Commands.PLAYER_EXIT_GAME, (app, data) -> {
+			System.out.println("player exit game: " + data);
+			app.send(Commands.PLAYER_EXIT_GAME);
+		});
 	}
 }
