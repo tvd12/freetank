@@ -47,7 +47,7 @@ public class GameService {
     }
 
     public LocatedRoom removePlayer(String username) {
-        LocatedPlayer player = playerManager.getPlayer(username);
+        LocatedPlayer player = playerManager.removePlayer(username);
         if(player == null)
             return null;
         LocatedRoom room = roomManager.getRoom(player.getCurrentRoomId());
