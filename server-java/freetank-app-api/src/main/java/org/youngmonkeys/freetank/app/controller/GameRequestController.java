@@ -112,19 +112,15 @@ public class GameRequestController extends EzyLoggable {
 			throw new BadRequestException(Errors.UNKNOWN, "you're a hacker");
 		}
 		List<String> playerNames;
-		if(request.getTo() != null) {
-			playerNames = Collections.singletonList(request.getTo());
+		LocatedRoom room;
+		synchronized (gameService) {
+			room = gameService.getRoom(player.getCurrentRoomId());
 		}
-		else {
-			LocatedRoom room;
-			synchronized (gameService) {
-				room = gameService.getRoom(player.getCurrentRoomId());
-			}
-			synchronized (room) {
-				playerNames = room.getPlayerManager().getPlayerNames();
-			}
+		synchronized (room) {
+			playerNames = room.getPlayerManager().getPlayerNames();
 		}
 		responseFactory.newObjectResponse()
+			.udpTransport()
 			.command(Commands.SYNC_DATA)
 			.data(
 				EzyEntityFactory.newObjectBuilder()

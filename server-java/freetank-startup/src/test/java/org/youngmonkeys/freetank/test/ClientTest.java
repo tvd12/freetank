@@ -81,27 +81,61 @@ public class ClientTest {
 		});
 		appSetup.addDataHandler(Commands.ACCESS_GAME, (app, data) -> {
 			System.out.println("hello: " + data);
-			app.udpSend(
-				Commands.SYNC_POSITION,
-				EzyEntityFactory.newArrayBuilder()
-					.append(
-						"character",
-						1,
-						EzyEntityFactory.newArrayBuilder().append(1, 2, 3),
-						EzyEntityFactory.newArrayBuilder().append(4, 5, 6)
-					)
-					.build()
-			);
-			app.send(
-				Commands.SYNC_DATA,
-				EzyEntityFactory.newObjectBuilder()
-					.append("command", "hello")
-					.append("data", "world")
-					.build()
-			);
+//			app.udpSend(
+//				Commands.SYNC_POSITION,
+//				EzyEntityFactory.newArrayBuilder()
+//					.append(
+//						"character",
+//						1,
+//						EzyEntityFactory.newArrayBuilder().append(1, 2, 3),
+//						EzyEntityFactory.newArrayBuilder().append(4, 5, 6)
+//					)
+//					.build()
+//			);
+//			app.send(
+//				Commands.SYNC_DATA,
+//				EzyEntityFactory.newObjectBuilder()
+//					.append("command", "hello")
+//					.append("data", "world")
+//					.build()
+//			);
 		});
 		appSetup.addDataHandler(Commands.PLAYER_ACCESS_GAME, (app, data) -> {
 			System.out.println("player access: " + data);
+			EzyArray positions = EzyEntityFactory.newArrayBuilder()
+				.append(
+					EzyEntityFactory.newObjectBuilder()
+						.append("Monkey", EzyEntityFactory.newObjectBuilder()
+							.append("position", EzyEntityFactory.newArrayBuilder()
+								.append(-3, 0, 30)
+								.build()
+							)
+							.build()
+						)
+				)
+				.append(
+					EzyEntityFactory.newObjectBuilder()
+						.append("dungtv", EzyEntityFactory.newObjectBuilder()
+							.append("position", EzyEntityFactory.newArrayBuilder()
+								.append(-30, 0, 19.8)
+								.build()
+							)
+							.build()
+						)
+				)
+					.build();
+			app.send(
+				Commands.SYNC_DATA,
+				EzyEntityFactory.newObjectBuilder()
+					.append("command", "startGame")
+					.append(
+						"data",
+						EzyEntityFactory.newObjectBuilder()
+							.append("positions", positions)
+							.build()
+					)
+					.build()
+			);
 		});
 		appSetup.addDataHandler(Commands.SYNC_POSITION, (app, data) -> {
 			System.out.println("position: " + data);
