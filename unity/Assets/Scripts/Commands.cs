@@ -2,7 +2,6 @@
 
 public sealed class Commands
 {
-
     public const String ACCESS_GAME = "accessGame";
 	public const String PLAYER_ACCESS_GAME = "playerAccessGame";
 	public const String PLAYER_EXIT_GAME = "playerExitGame";

@@ -50,7 +50,7 @@ public class GameManager
         foreach (var obj in gameObjectPositions.Keys)
         {
             var position = gameObjectPositions[obj];
-            if(obj == null || !obj.activeSelf)
+            if (obj == null || !obj.activeSelf)
             {
                 gameObjectPositionsChanged[obj] = position;
                 continue;
@@ -72,15 +72,16 @@ public class GameManager
             }
             var position = gameObjectPositionsChanged[obj];
             gameObjectPositions[obj] = position;
+#if CHECK
             socketClientProxy.syncPosition(
-                obj.name,
-                gameObjectTypes[obj],
-                obj.GetInstanceID(),
-                true,
-                position.x,
-                position.y,
-                position.z
-            );
+                    obj.name,
+                    gameObjectTypes[obj],
+                    obj.GetInstanceID(),
+                    true,
+                    position.x,
+                    position.y,
+                    position.z
+#endif
         }
         gameObjectPositionsChanged.Clear();
     }
