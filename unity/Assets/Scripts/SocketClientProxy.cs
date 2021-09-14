@@ -6,6 +6,9 @@ using com.tvd12.ezyfoxserver.client.factory;
 using com.tvd12.ezyfoxserver.client.handler;
 using com.tvd12.ezyfoxserver.client.evt;
 using com.tvd12.ezyfoxserver.client.request;
+using com.tvd12.ezyfoxserver.client.logger;
+using UnityEngine;
+using System;
 
 public delegate void Callback0();
 public delegate void ObjectCallback(EzyObject obj);
@@ -57,23 +60,28 @@ class AppAccessHandler : EzyAppAccessHandler
     protected override void postHandle(EzyApp app, EzyArray data)
     {
         var request = EzyEntityFactory.newObject();
-        app.send("access", request);
+        app.send(Commands.ACCESS_GAME, request);
     }
 }
 
-class ReconnectResponseHandler : EzyAbstractAppDataHandler<EzyObject>
+class AccessGameResponseHandler : EzyAbstractAppDataHandler<EzyObject>
 {
+    public static event Action Callback;
     protected override void process(EzyApp app, EzyObject data)
     {
         SocketClientProxy.getInstance().emitReconnected(data);
+        Callback?.Invoke();
     }
 }
 
-class GetGameIdResponseHandler : EzyAbstractAppDataHandler<EzyObject>
+class PlayerAccessGameResponseHandle : EzyAbstractAppDataHandler<EzyObject>
 {
+    public static event Action Callback;
     protected override void process(EzyApp app, EzyObject data)
     {
-        SocketClientProxy.getInstance().emitGameIdReceived(data);
+        //SocketClientProxy.getInstance().emitGameIdReceived(data);
+        EzyLoggerFactory.getLogger("PlayerAccessGame").info(data.ToString());
+        Callback?.Invoke();
     }
 }
 
@@ -86,8 +94,8 @@ class StartGameResponseHandler : EzyAbstractAppDataHandler<EzyObject>
 }
 public class SocketClientProxy
 {
-    public const string ZONE_NAME = "breaking-game";
-    public const string APP_NAME = "breaking-game";
+    public const string ZONE_NAME = "freetank";
+    public const string APP_NAME = "freetank";
 
     public string username;
     public string password;
@@ -122,12 +130,13 @@ public class SocketClientProxy
         setup.addDataHandler(EzyCommand.LOGIN_ERROR, new EzyLoginErrorHandler());
         setup.addDataHandler(EzyCommand.APP_ACCESS, new AppAccessHandler());
         setup.addDataHandler(EzyCommand.UDP_HANDSHAKE, new UdpHandshakeHandler());
+
         var appSetup = setup.setupApp(APP_NAME);
-        appSetup.addDataHandler(Commands.ACCESS_GAME, new ReconnectResponseHandler());
-        appSetup.addDataHandler(Commands.PLAYER_ACCESS_GAME, new GetGameIdResponseHandler());
-        appSetup.addDataHandler(Commands.PLAYER_EXIT_GAME, new StartGameResponseHandler());
-        appSetup.addDataHandler(Commands.SYNC_POSITION, new StartGameResponseHandler());
-        appSetup.addDataHandler(Commands.SYNC_DATA, new StartGameResponseHandler());
+        appSetup.addDataHandler(Commands.ACCESS_GAME, new AccessGameResponseHandler());
+        appSetup.addDataHandler(Commands.PLAYER_ACCESS_GAME, new PlayerAccessGameResponseHandle());
+        //appSetup.addDataHandler(Commands.PLAYER_EXIT_GAME, new StartGameResponseHandler());
+        //appSetup.addDataHandler(Commands.SYNC_POSITION, new StartGameResponseHandler());
+        //appSetup.addDataHandler(Commands.SYNC_DATA, new StartGameResponseHandler());
         appAccessed = false;
     }
 
@@ -164,8 +173,8 @@ public class SocketClientProxy
 
     public void emitReconnected(EzyObject data)
     {
-        appAccessed = true;
-        reconnectedCallback(data);
+        //appAccessed = true;
+        //reconnectedCallback(data);
     }
 
     public void onReconnected(ObjectCallback callback)
@@ -175,7 +184,7 @@ public class SocketClientProxy
 
     public void emitStartGame(EzyObject data)
     {
-        startGameCallback(data);
+        //startGameCallback(data);
     }
 
     public void onStartGame(ObjectCallback callback)
@@ -185,8 +194,8 @@ public class SocketClientProxy
 
     public void emitDisconnected()
     {
-        appAccessed = false;
-        disconnectedCallback();
+        //appAccessed = false;
+        //disconnectedCallback();
     }
 
     public void onDisconnected(Callback0 callback)
